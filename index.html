@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>André Beda — Portfólio</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; color:#fff; font-family:'Plus Jakarta Sans', sans-serif; overflow-x:hidden; }
+
+/* Header */
+.header-nav { width:100%; height:70px; position:fixed; top:0; left:0; display:flex; justify-content:center; align-items:center; backdrop-filter:blur(10px); background:rgba(0,0,0,0.4); z-index:1000; }
+.header-nav nav a { text-decoration:none; color:#fff; margin:0 18px; font-size:0.95rem; opacity:0.6; transition:0.2s ease; cursor:pointer; }
+.header-nav nav a:hover { opacity:1; }
+
+/* Sections */
+section { width:100%; min-height:calc(100vh - 70px); padding-top:70px; position:absolute; top:0; left:0; opacity:0; pointer-events:none; transition:opacity 0.6s ease; }
+section.active { opacity:1; pointer-events:auto; }
+
+/* Hero Section */
+.hero { display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:0 20px; }
+h1 { font-size:4rem; font-weight:700; letter-spacing:-1px; margin-bottom:15px; }
+.mini-bio { max-width:500px; font-size:1rem; opacity:0.75; line-height:1.6; text-align:center; }
+
+/* Trabalhos */
+.grid-section { width:100%; display:flex; justify-content:center; padding:80px 0; }
+.grid { width:90%; max-width:1100px; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:22px; }
+.card { width:100%; height:380px; border-radius:12px; display:flex; align-items:flex-end; justify-content:flex-start; padding:15px; box-sizing:border-box; color:#fff; font-weight:600; background: linear-gradient(270deg, #FF5F6D, #FFC371, #24C6DC, #835AB4); background-size: 800% 800%; animation: gradientBG 15s ease infinite; cursor:pointer; transition:transform 0.3s ease, opacity 0.6s ease; overflow:hidden; }
+.card:hover { transform: scale(1.03); }
+.card-label { position:relative; z-index:1; font-size:1rem; background:rgba(0,0,0,0.3); padding:5px 10px; border-radius:6px; }
+
+/* Gradiente animado */
+@keyframes gradientBG { 0% { background-position:0% 50%; } 50% { background-position:100% 50%; } 100% { background-position:0% 50%; } }
+
+/* Sobre */
+#sobre { padding:80px 20px; display:flex; justify-content:center; align-items:center; }
+#sobre-container { display:grid; grid-template-columns:1fr 300px; gap:40px; max-width:1000px; width:100%; align-items:start; }
+#sobre-text { text-align:left; color:#fff; }
+#sobre-text h2 { font-size:3rem; font-weight:700; margin-bottom:25px; text-align:center; }
+#sobre-text p, #sobre-text .setup h3, #sobre-text .setup ul { margin-bottom:15px; line-height:1.6; }
+#sobre .photo-card { width:100%; aspect-ratio:3/4; background:#111; border:1px solid #222; border-radius:12px; display:flex; justify-content:center; align-items:center; overflow:hidden; }
+
+/* Contato centralizado */
+#contato { display:flex; flex-direction:column; justify-content:center; align-items:center; padding:80px 20px; min-height:calc(100vh - 70px); text-align:center; line-height:1.6; }
+#contato h2 { font-size:2.5rem; margin-bottom:20px; }
+#contato p { margin-bottom:10px; }
+
+/* Links minimalistas */
+a.link-minimal { color:#fff; text-decoration:none; font-weight:600; transition:opacity 0.2s ease; }
+a.link-minimal:hover { opacity:0.7; }
+
+/* Subpáginas de card */
+.card-page { width:100%; min-height:calc(100vh - 70px); padding:80px 20px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; opacity:0; pointer-events:none; transition:opacity 0.6s ease; }
+.card-page.active { opacity:1; pointer-events:auto; }
+.card-page h2 { font-size:2.5rem; margin-bottom:25px; text-align:center; }
+.media-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; width:90%; max-width:1000px; }
+.media-grid img, .media-grid video { width:100%; height:200px; object-fit:cover; border-radius:10px; cursor:pointer; }
+
+/* Lightbox */
+#lightbox { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:flex; justify-content:center; align-items:center; opacity:0; pointer-events:none; transition:opacity 0.3s ease; z-index:2000; }
+#lightbox.active { opacity:1; pointer-events:auto; }
+#lightbox img, #lightbox video { max-width:90%; max-height:90%; object-fit:contain; border-radius:10px; }
+
+/* Botões voltar */
+.back-btn { margin-top:30px; padding:10px 20px; border:none; background:rgba(255,255,255,0.1); color:#fff; cursor:pointer; border-radius:6px; font-weight:600; transition:0.2s ease; }
+.back-btn:hover { background:rgba(255,255,255,0.2); }
+
+/* Responsividade */
+@media(max-width:900px){
+  h1{font-size:3rem}
+  .card{height:260px}
+  #sobre-container{grid-template-columns:1fr;text-align:center}
+  #sobre-text{text-align:left}
+  #sobre .photo-card{width:60%;margin:0 auto}
+}
+@media(max-width:600px){
+  h1{font-size:2.4rem}
+  .mini-bio{font-size:0.9rem;max-width:90%}
+  .header-nav nav a{margin:0 10px;font-size:0.85rem}
+  .card{height:220px}
+  .grid{gap:16px}
+  .media-grid{grid-template-columns:1fr;}
+}
+@media(max-width:420px){
+  h1{font-size:2rem}
+  .card{height:200px}
+  .card-label{font-size:0.85rem;bottom:14px}
+  #sobre .photo-card{width:80%}
+}
+</style>
+</head>
+<body>
+
+<header class="header-nav">
+    <nav>
+        <a data-target="inicio">Início</a>
+        <a data-target="trabalhos">Trabalhos</a>
+        <a data-target="sobre">Sobre</a>
+        <a data-target="contato">Contato</a>
+    </nav>
+</header>
+
+<!-- Home -->
+<section class="hero active" id="inicio">
+    <h1>André Beda</h1>
+    <p class="mini-bio">Editor de vídeos especializado em reels, TikTok, YouTube, VSL, cortes e pós-produção completa.</p>
+</section>
+
+<!-- Trabalhos -->
+<section class="grid-section" id="trabalhos">
+    <div class="grid">
+        <div class="card" data-target="reels"><span class="card-label">Reels / TikTok</span></div>
+        <div class="card" data-target="youtube"><span class="card-label">YouTube</span></div>
+        <div class="card" data-target="vsl"><span class="card-label">VSL</span></div>
+        <div class="card" data-target="cortes"><span class="card-label">Cortes</span></div>
+        <div class="card" data-target="motion"><span class="card-label">Motion</span></div>
+        <div class="card" data-target="design"><span class="card-label">Design Gráfico</span></div>
+    </div>
+</section>
+
+<!-- Sobre -->
+<section id="sobre">
+    <div id="sobre-container">
+        <div id="sobre-text">
+            <h2>SOBRE MIM</h2>
+            <p>Sou editor de vídeos e designer, especializado em reels, TikTok, YouTube, VSL e cortes. Busco trazer qualidade, criatividade e minimalismo em cada projeto.</p>
+            <p>Tenho experiência em projetos comerciais e pessoais, focando sempre na estética moderna e funcional.</p>
+            <div class="setup">
+                <h3>Meu Setup e Softwares</h3>
+                <ul>
+                    <li><strong>Setup:</strong> Galaxy Book 2 i7-12th / 552GB SSD / 8GB RAM / Intel Graphic Iris Xe</li>
+                    <li><strong>Softwares:</strong> Capcut, VEGAS PRO, Cinema 4D, Corel Draw, Photoshop CS6, Audacity, After Effects e Adobe Premiere</li>
+                </ul>
+            </div>
+            <p>Instagram: <a href="https://instagram.com/bedaandre" target="_blank" class="link-minimal">@bedaandre</a></p>
+            <p>Email: <a href="mailto:bedaadesign@gmail.com" class="link-minimal">bedaadesign@gmail.com</a></p>
+        </div>
+        <div class="photo-card">
+            <img src="img/foto.jpg" alt="Foto André Beda" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+    </div>
+</section>
+
+<!-- Contato -->
+<section id="contato">
+    <h2>Contato</h2>
+    <p>Entre em contato comigo através das redes ou email abaixo:</p>
+    <p>Instagram: <a href="https://instagram.com/bedaandre" target="_blank" class="link-minimal">@bedaandre</a></p>
+    <p>Email: <a href="mailto:bedaadesign@gmail.com" class="link-minimal">bedaadesign@gmail.com</a></p>
+</section>
+
+<!-- Subpáginas dos cards -->
+<section id="reels" class="card-page">
+    <h2>Reels / TikTok</h2>
+    <div class="media-grid">
+        <video src="videos/reel1.mp4" controls></video>
+        <video src="videos/reel2.mp4" controls></video>
+        <video src="videos/reel3.mp4" controls></video>
+    </div>
+    <button class="back-btn">Voltar</button>
+</section>
+
+<section id="youtube" class="card-page">
+    <h2>YouTube</h2>
+    <div class="media-grid">
+        <video src="videos/yt1.mp4" controls></video>
+        <video src="videos/yt2.mp4" controls></video>
+        <video src="videos/yt3.mp4" controls></video>
+    </div>
+    <button class="back-btn">Voltar</button>
+</section>
+
+<section id="vsl" class="card-page">
+    <h2>VSL</h2>
+    <div class="media-grid">
+        <video src="videos/vsl1.mp4" controls></video>
+        <video src="videos/vsl2.mp4" controls></video>
+        <video src="videos/vsl3.mp4" controls></video>
+    </div>
+    <button class="back-btn">Voltar</button>
+</section>
+
+<section id="cortes" class="card-page">
+    <h2>Cortes</h2>
+    <div class="media-grid">
+        <video src="videos/corte1.mp4" controls></video>
+        <video src="videos/corte2.mp4" controls></video>
+        <video src="videos/corte3.mp4" controls></video>
+    </div>
+    <button class="back-btn">Voltar</button>
+</section>
+
+<section id="motion" class="card-page">
+    <h2>Motion</h2>
+    <div class="media-grid">
+        <video src="videos/motion1.mp4" controls></video>
+        <video src="videos/motion2.mp4" controls></video>
+        <video src="videos/motion3.mp4" controls></video>
+    </div>
+    <button class="back-btn">Voltar</button>
+</section>
+
+<section id="design" class="card-page">
+    <h2>Design Gráfico</h2>
+    <div class="media-grid">
+        <img src="img/design1.jpg" alt="Design 1">
+        <img src="img/design2.jpg" alt="Design 2">
+        <img src="img/design3.jpg" alt="Design 3">
+        <img src="img/design4.jpg" alt="Design 4">
+        <img src="img/design5.jpg" alt="Design 5">
+        <img src="img/design6.jpg" alt="Design 6">
+        <img src="img/design7.jpg" alt="Design 7">
+        <img src="img/design8.jpg" alt="Design 8">
+        <img src="img/design9.jpg" alt="Design 9">
+        <img src="img/design10.jpg" alt="Design 10">
+    </div>
+    <button class="back-btn">Voltar</button>
+</section>
+
+<!-- Lightbox -->
+<div id="lightbox"></div>
+
+<footer style="width:100%; text-align:center; padding:40px 0; opacity:0.6; font-size:0.95rem;">
+    Instagram: <strong>@bedaandre</strong>
+</footer>
+
+<script>
+// Navegação principal
+const links = document.querySelectorAll('.header-nav nav a');
+const sections = document.querySelectorAll('section');
+links.forEach(link => {
+    link.addEventListener('click', () => {
+        const targetId = link.getAttribute('data-target');
+        sections.forEach(sec => sec.classList.remove('active'));
+        document.getElementById(targetId).classList.add('active');
+        window.scrollTo({top:0, behavior:'smooth'});
+    });
+});
+
+// Cards abrem subpáginas
+const cards = document.querySelectorAll('.card');
+cards.forEach(card => {
+    card.addEventListener('click', () => {
+        const targetId = card.getAttribute('data-target');
+        sections.forEach(sec => sec.classList.remove('active'));
+        document.getElementById(targetId).classList.add('active');
+        window.scrollTo({top:0, behavior:'smooth'});
+    });
+});
+
+// Botões voltar das subpáginas
+const backButtons = document.querySelectorAll('.back-btn');
+backButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        sections.forEach(sec => sec.classList.remove('active'));
+        document.getElementById('trabalhos').classList.add('active');
+        window.scrollTo({top:0, behavior:'smooth'});
+    });
+});
+
+// Lightbox
+const lightbox = document.getElementById('lightbox');
+const mediaItems = document.querySelectorAll('.media-grid img, .media-grid video');
+mediaItems.forEach(item => {
+    item.addEventListener('click', () => {
+        lightbox.innerHTML = '';
+        const clone = item.cloneNode();
+        clone.style.width = 'auto';
+        clone.style.height = '80%';
+        clone.style.maxWidth = '90%';
+        clone.style.objectFit = 'contain';
+        lightbox.appendChild(clone);
+        lightbox.classList.add('active');
+    });
+});
+lightbox.addEventListener('click', () => {
+    lightbox.classList.remove('active');
+});
+</script>
+
+</body>
+</html>
